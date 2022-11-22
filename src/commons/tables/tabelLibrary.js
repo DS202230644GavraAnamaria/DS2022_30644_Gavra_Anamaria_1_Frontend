@@ -22,3 +22,4 @@ function getColumns(data) {
 export  {
     getColumns,
 }
+``

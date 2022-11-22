@@ -2,6 +2,7 @@ function performRequest(request, callback){
     fetch(request)
         .then(
             function(response) {
+                console.log(response);
                 if (response.ok) {
                     response.json().then(json => callback(json, response.status,null));
                 }
