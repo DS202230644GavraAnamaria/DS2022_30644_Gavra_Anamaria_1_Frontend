@@ -8,17 +8,17 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import {Col, Modal, ModalBody, ModalHeader, Nav, Navbar, NavbarBrand, Row} from "reactstrap";
-import l from "../commons/images/icon1.png";
-import i from "../commons/images/insert.png";
-import d from "../commons/images/delete.png";
-import u from "../commons/images/update.png";
-import m from "../commons/images/mapping.png";
-import PersonContainer from "./person-container";
-import {createTheme, IconButton, Tab, Tabs, Typography} from "@mui/material";
+import {Modal, ModalBody, ModalHeader, Nav, Navbar,} from "reactstrap";
+import l from "../../commons/images/icon1.png";
+import i from "../../commons/images/insert.png";
+import d from "../../commons/images/delete.png";
+import u from "../../commons/images/update.png";
+import m from "../../commons/images/mapping.png";
+import AdminContainer from "./admin-container";
+import {Tab, Tabs, Typography} from "@mui/material";
 import PropTypes from "prop-types";
-import PersonForm from "./components/person-form";
-import MappingForm from "./components/mapping-form";
+import CrudForm from "./crud-form";
+import MappingForm from "./mapping-form";
 
 
 
@@ -33,11 +33,9 @@ const s3 = {
     height:68,
     width:200,
     fontSize:20,
-  //  color:'white',
 };
 const listStyle = {
     height:90,
-  // backgroundColor: 'red',
     fontSize:20,
     textAlign:'left',
     textDecoration:'bolt',
@@ -219,32 +217,32 @@ export default function NavigationBar() {
                     </Nav>
                 </Navbar>
         </div>
-            {value === 0 && <PersonContainer index={0}/>}
-            {value === 1 && <PersonContainer index={1}/>}
-            {value === 2 && <PersonContainer index={2}/>}
+            {value === 0 && <AdminContainer index={0}/>}
+            {value === 1 && <AdminContainer index={1}/>}
+            {value === 2 && <AdminContainer index={2}/>}
 
             <Modal isOpen={(sel.insert && value!==2)} toggle={() =>toggleForm("insert")}
                    size="lg">
                 <ModalHeader toggle={() =>toggleForm("insert")}> Add: </ModalHeader>
                 <ModalBody>
-                    {value === 0 && <PersonForm tab={0} oper={0} reloadHandler={reload}/>}
-                    {value === 1 && <PersonForm tab={1} oper={0} reloadHandler={reload}/>}
+                    {value === 0 && <CrudForm tab={0} oper={0} reloadHandler={reload}/>}
+                    {value === 1 && <CrudForm tab={1} oper={0} reloadHandler={reload}/>}
                 </ModalBody>
             </Modal>
 
             <Modal isOpen={(sel.update && value!==2)} toggle={() =>toggleForm("update")} size="lg">
                 <ModalHeader toggle={() =>toggleForm("update")}> Update: </ModalHeader>
                 <ModalBody>
-                    {value === 0 && <PersonForm oper={1} tab={0} reloadHandler={reload}/>}
-                    {value === 1 && <PersonForm oper={1} tab={1} reloadHandler={reload}/>}
+                    {value === 0 && <CrudForm oper={1} tab={0} reloadHandler={reload}/>}
+                    {value === 1 && <CrudForm oper={1} tab={1} reloadHandler={reload}/>}
                 </ModalBody>
             </Modal>
 
             <Modal isOpen={(sel.delete && value!==2)} toggle={() =>toggleForm("delete")} size="lg">
                 <ModalHeader toggle={() =>toggleForm("delete")}>Delete: </ModalHeader>
                 <ModalBody>
-                    {value === 0 && <PersonForm tab={0} oper={2} reloadHandler={reload}/>}
-                    {value === 1 && <PersonForm tab={1} oper={2} reloadHandler={reload}/>}
+                    {value === 0 && <CrudForm tab={0} oper={2} reloadHandler={reload}/>}
+                    {value === 1 && <CrudForm tab={1} oper={2} reloadHandler={reload}/>}
                 </ModalBody>
             </Modal>
 

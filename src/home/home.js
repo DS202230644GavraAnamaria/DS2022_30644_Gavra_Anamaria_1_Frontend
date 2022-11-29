@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import * as API_USERS from "../person/api/person-api";
+import * as API_USERS from "../person/admin/admin-api";
 
 import { useHistory } from "react-router-dom";
 import Swal from 'sweetalert2'
@@ -7,21 +7,20 @@ import Swal from 'sweetalert2'
 export default function home() {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-
-
     let history = useHistory();
-
-
 
     const loginSubmit = () => {
             let data={uname: email, password: password };
             console.log(data);
            return  API_USERS.login( data,(result, status) => {
                 if (result !== null && (status === 200 || status === 201)) {
-                    if(result==='ADMIN')
-                        history.push("/person");
+                    if(result==='ADMIN') {
+                        localStorage.setItem("role", "ADMIN");
+                        history.push("/admin");
+                    }
                     else {
                         localStorage.setItem("userName", email);
+                        localStorage.setItem("role", "CLIENT");
                             history.push("/client" );
                     }
                 } else {

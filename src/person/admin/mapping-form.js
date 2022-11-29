@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from "react-bootstrap/Button";
-import * as API_USERS from "../api/person-api";
+import * as API_USERS from "./admin-api";
 import APIResponseErrorMessage from "../../commons/errorhandling/api-response-error-message";
 import {Alert, Col, Row} from "reactstrap";
 import { FormGroup, Input, Label} from 'reactstrap';

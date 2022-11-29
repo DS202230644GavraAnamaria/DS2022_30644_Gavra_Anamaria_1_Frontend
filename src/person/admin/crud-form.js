@@ -1,7 +1,7 @@
 import React from 'react';
-import validate from "./validators/person-validators";
+import validate from "../components/person-validators";
 import Button from "react-bootstrap/Button";
-import * as API_USERS from "../api/person-api";
+import * as API_USERS from "./admin-api";
 import APIResponseErrorMessage from "../../commons/errorhandling/api-response-error-message";
 import {Alert, Col, Row} from "reactstrap";
 import { FormGroup, Input, Label} from 'reactstrap';
@@ -9,7 +9,7 @@ import Select from 'react-select';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {AlertTitle} from "@mui/material";
 import {CloseButton} from "react-bootstrap";
-import {forEach} from "react-bootstrap/ElementChildren";
+
 const userData = {
     name: {
         value: '',
@@ -53,7 +53,7 @@ const rol = [
 ];
 let userFields
 
-class PersonForm extends React.Component {
+class CrudForm extends React.Component {
 
     constructor(props) {
         super(props);
@@ -286,4 +286,4 @@ class PersonForm extends React.Component {
 
 }
 
-export default PersonForm;
+export default CrudForm;

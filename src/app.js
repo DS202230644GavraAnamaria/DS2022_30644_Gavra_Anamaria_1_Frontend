@@ -1,12 +1,11 @@
 import React from 'react'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import Home from './home/home';
-import NavigationBar from './person/admin'
+import Admin from './person/admin/admin'
 
 import ErrorPage from './commons/errorhandling/error-page';
 import styles from './commons/styles/project-style.css';
-import Client from "./person/client";
-
+import Client from "./person/client/client";
 class App extends React.Component {
 
 
@@ -14,8 +13,8 @@ class App extends React.Component {
 
         return (
             <div className={styles.back}>
-
             <Router>
+                {console.log("+++++++++++++++++++++++"+(localStorage.getItem("role")==="ADMIN"))}
                 <div>
                     <Switch>
 
@@ -27,15 +26,14 @@ class App extends React.Component {
 
                         <Route
                             exact
-                            path='/person'
-                            render={() => <NavigationBar/>}
+                            path='/admin'
+                            render={() =>(localStorage.getItem("role")==="ADMIN")? <Admin/>:<Home/>}
                         />
                         <Route
                             exact
                             path='/client'
-                            render={() => <Client/>}
+                            render={() => (localStorage.getItem("role")==="CLIENT")? <Client/>:<Home/>}
                         />
-
                         {/*Error*/}
                         <Route
                             exact
