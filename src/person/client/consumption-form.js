@@ -17,21 +17,6 @@ const styles = {
     textAlign: "center"
 };
 
-const data = [{
-        year: 2001,
-        value: 100},
-    {
-        year: 2002,
-        value: 101},
-];
-
-const rand = 300;
-
-const style1={
-    width:'100%',
-    maxWidth:'700px'
-}
-
 
 class ConsumptionForm extends React.Component {
 
@@ -39,7 +24,6 @@ class ConsumptionForm extends React.Component {
         super(props);
         this.reload = this.reload.bind(this);
         this.toggleForm = this.toggleForm.bind(this);
-        //this.reloadHandler = this.props.reloadHandler;
         this.state = {
             isLoaded: false,
             data:[],
@@ -56,13 +40,28 @@ class ConsumptionForm extends React.Component {
                     touched: false,
                 },},
         };
-     //   this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleInsertSubmit = this.handleInsertSubmit.bind(this);
     }
 
     toggleForm() {
         this.setState({collapseForm: !this.state.collapseForm});
     }
+
+
+    dateToString(){
+        let d=this.state.formControls.day.value;
+        let date = d.getFullYear();
+        if (d.getMonth<10) date=date+"0";
+        date+=(String)(d.getMonth()+1);
+        if (d.getDate()<10) date=date+"0";
+        date+=d.getDate()+this.state.formControls.device.value;
+        console.log(date);
+        return date;
+    }
+
+    //-------------------------------------------------------------------[ Handle Change ]------------------------------------------------------------
+
 
     handleChange =(value) => {
         const updatedControls = this.state.formControls;
@@ -91,38 +90,8 @@ class ConsumptionForm extends React.Component {
 
 //------------------------------------------[ submit ]-----------------------------------------------------------------------
 
-    // registerUser() {
-    //     let data;
-    //     if(this.props.tab===0)
-    //         data = {name: this.state.formControls.name.value, password: this.state.formControls.password.value, role: this.state.formControls.role.value,};
-    //     else
-    //         data={description: this.state.formControls.name.value, address: this.state.formControls.password.value, maxEnergy: this.state.formControls.role.value,user_id:null,};
-    //     console.log(data);
-    //     return API_USERS.postData(this.props.tab, data,(result, status, error) => {
-    //         if (result !== null && (status === 200 || status === 201)) {
-    //             this.setState(({
-    //                 success:true,
-    //             }));
-    //             this.reloadHandler();
-    //         } else {
-    //             this.setState(({
-    //                 errorStatus: status,
-    //                 error: error
-    //             }));
-    //         }
-    //     });
-    // }
-    //
-    deleteUser() {
-        console.log(this.state.formControls.day.value);
-        let d=this.state.formControls.day.value;
-        let date = d.getFullYear();
-        if (d.getMonth<10) date=date+"0";
-        date+=(String)(d.getMonth()+1);
-        if (d.getDate()<10) date=date+"0";
-        date+=d.getDate()+this.state.formControls.device.value;
-        console.log(date);
-        return API_USERS.getConsByDay(date, (result, status, error) => {
+    getConsByDay() {
+        return API_USERS.getConsByDay(this.dateToString(), (result, status, error) => {
             if (result !== null && (status === 200 || status === 201)) {
                 let d=[];
                 console.log(result)
@@ -144,10 +113,10 @@ class ConsumptionForm extends React.Component {
     }
 
 
-    insertCons() {API_USERS.insertCons((result, status, error) => {
-        if (result !== null && (status === 200 || status === 201)) {
-            this.reloadHandler();
-        } else {
+    handleInsertSubmit() {
+        let data = {time:this.dateToString(), device: this.state.formControls.device.value};
+        API_USERS.insertCons(data, (result, status, error) => {
+        if (result === null || (status !== 200 && status !== 201)) {
             this.setState(({
                 errorStatus: status,
                 error: error
@@ -158,8 +127,7 @@ class ConsumptionForm extends React.Component {
     handleSubmit() {
         console.log(this.state.formControls.day.value);
         console.log(this.state.formControls.device.value);
-        this.deleteUser();
-
+        this.getConsByDay();
     }
 
     componentDidMount() {
@@ -171,9 +139,6 @@ class ConsumptionForm extends React.Component {
             isLoaded: true,
             data: d,
         })
-
-
-
     }
 
 //--------------------------------------------------[ load ]-----------------------------------------------------------------
@@ -203,25 +168,22 @@ class ConsumptionForm extends React.Component {
                 </div>
                 <Row>
                     <Col sm={{size: '4', offset: 5}}>
-                        <Button type={"submit"} disabled={!this.state.formIsValid}
-                                onClick={this.handleSubmit}> Submit </Button>
+                        <Button type={"submit"} disabled={!this.state.formIsValid} onClick={this.handleInsertSubmit}> Insert </Button>
+                        <Button type={"submit"} disabled={!this.state.formIsValid} onClick={this.handleSubmit}> Submit </Button>
                     </Col>
                 </Row>
 
                 <div style={styles}>
-
                     <LineChart
                         width={500}
                         height={300}
                         data={this.state.cons}
-                        margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
-                    >
+                        margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                         <Line type="monotone" dataKey="value" stroke="#8884d8" dot={false} />
                         <XAxis dataKey="label" />
-                        <YAxis />
+                        <YAxis/>
                     </LineChart>
                 </div>
-
                 {this.state.errorStatus > 0 &&
                     <APIResponseErrorMessage errorStatus={this.state.errorStatus} error={this.state.error}/>}
                 {this.state.success === true && <Alert status='error'>

@@ -145,8 +145,8 @@ class CrudForm extends React.Component {
     }
 
     deleteUser() {
-        console.log(this.state.formControls.user.value);
-        return API_USERS.deleteByName(this.state.tab, this.state.formControls.user.value, (result, status, error) => {
+        console.log(this.props.tab + this.state.formControls.user.value);
+        return API_USERS.deleteByName(this.props.tab, this.state.formControls.user.value, (result, status, error) => {
             if (result !== null && (status === 200 || status === 201)) {
                 this.setState(({
                     success:true,
